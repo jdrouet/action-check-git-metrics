@@ -1,0 +1,45 @@
+name: "git-metrics check result in pull request"
+description: "A GitHub action to check metrics and push in a pull request comment"
+author: "Jeremie Drouet <jeremie.drouet@gmail.com>"
+
+# Add your action's branding here. This will appear on the GitHub Marketplace.
+branding:
+  icon: "bar-chart"
+  color: "blue"
+
+# Define your inputs here.
+inputs:
+  comment_tag:
+    description: "Tag to use for later updates"
+    required: false
+    default: "git-metrics"
+
+runs:
+  using: composite
+  steps:
+    - name: output git-metrics
+      shell: bash
+      id: diff
+      run: |
+        check_output=$(git-metrics check origin/$GITHUB_BASE_REF..HEAD)
+        check_code=&?
+        echo "metrics<<EOF" >> $GITHUB_OUTPUT
+        echo $check_output >> $GITHUB_OUTPUT
+        echo EOF >> $GITHUB_OUTPUT
+        echo "code=$check_code" >> $GITHUB_OUTPUT
+
+    - name: commenting pull request
+      uses: thollander/actions-comment-pull-request@v2
+      with:
+        comment_tag: ${{ inputs.comment_tag }}
+        message: |
+          📈 This is how your metrics evolved 📉
+
+          ```
+          ${{ steps.diff.outputs.metrics }}
+          ```
+
+    - name: report exit code
+      shell: bash
+      if: ${{ steps.diff.outputs.code != '0' }}
+      run: exit ${{ steps.diff.outputs.code }}
