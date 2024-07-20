@@ -22,7 +22,7 @@ runs:
       id: diff
       run: |
         check_output=$(git-metrics check origin/$GITHUB_BASE_REF..HEAD)
-        check_code=&?
+        check_code=$?
         echo "metrics<<EOF" >> $GITHUB_OUTPUT
         echo $check_output >> $GITHUB_OUTPUT
         echo EOF >> $GITHUB_OUTPUT
