@@ -2,9 +2,6 @@ name: code testing
 
 on:
   pull_request:
-  push:
-    branches:
-      - main
 
 env:
   RUSTFLAGS: "-Dwarnings"
