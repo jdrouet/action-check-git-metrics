@@ -1,0 +1,3 @@
+[[metrics.fake.rules]]
+type = "max"
+value = 100

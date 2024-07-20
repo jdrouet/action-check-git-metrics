@@ -1,0 +1,35 @@
+name: code testing
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+env:
+  RUSTFLAGS: "-Dwarnings"
+
+jobs:
+  should-succeed:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jdrouet/action-git-identity@main
+      - uses: jdrouet/action-install-git-metrics@main
+      - uses: jdrouet/action-execute-git-metrics@main # or with a specific version
+        with:
+          pull: "true"
+          script: "add fake 10.0"
+      - uses: jdrouet/action-check-git-metrics@main
+
+  should-faild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jdrouet/action-git-identity@main
+      - uses: jdrouet/action-install-git-metrics@main
+      - uses: jdrouet/action-execute-git-metrics@main # or with a specific version
+        with:
+          pull: "true"
+          script: "add fake 200.0"
+      - uses: jdrouet/action-check-git-metrics@main
