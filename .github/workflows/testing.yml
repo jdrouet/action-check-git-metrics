@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: jdrouet/action-git-identity@main
       - uses: jdrouet/action-install-git-metrics@main
       - uses: jdrouet/action-execute-git-metrics@main # or with a specific version
@@ -23,6 +25,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: jdrouet/action-git-identity@main
       - uses: jdrouet/action-install-git-metrics@main
       - uses: jdrouet/action-execute-git-metrics@main # or with a specific version
