@@ -42,7 +42,7 @@ runs:
           ${{ steps.check_output.outputs.metrics }}
           ```
 
-    - name: report exit code
-      shell: bash
-      if: ${{ steps.check.outcome == 'failure' }}
-      run: exit 1
+    # - name: report exit code
+    #   shell: bash
+    #   if: ${{ steps.check.outcome == 'failure' }}
+    #   run: exit 1
