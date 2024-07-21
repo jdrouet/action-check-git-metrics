@@ -26,7 +26,7 @@ jobs:
         with:
           comment_tag: "git-metrics-check-success"
 
-  should-fail:
+  should-not-fail:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -42,3 +42,19 @@ jobs:
         with:
           comment_tag: "git-metrics-check-failed"
           ignore_failure: "true"
+
+  should-fail:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: jdrouet/action-git-identity@main
+      - uses: jdrouet/action-install-git-metrics@main
+      - uses: jdrouet/action-execute-git-metrics@main # or with a specific version
+        with:
+          pull: "true"
+          script: "add fake 200.0"
+      - uses: "./"
+        with:
+          comment_tag: "git-metrics-check-failed"
