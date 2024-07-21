@@ -25,6 +25,7 @@ runs:
 
     - name: move file content to output
       shell: bash
+      id: check_output
       run: |
         echo "metrics<<EOF" >> $GITHUB_OUTPUT
         cat check-output.txt >> $GITHUB_OUTPUT
@@ -38,7 +39,7 @@ runs:
           📈 This is how your metrics evolved 📉
 
           ```
-          ${{ steps.diff.outputs.metrics }}
+          ${{ steps.check_output.outputs.metrics }}
           ```
 
     - name: report exit code
