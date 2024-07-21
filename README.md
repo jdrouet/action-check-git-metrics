@@ -12,6 +12,9 @@ steps:
     id: checkout
     uses: actions/checkout@v4
 
+  - name: Set git identity
+    uses: jdrouet/action-git-identity@main
+
   - name: Install git-metrics
     uses: jdrouet/action-install-git-metrics@main
 
