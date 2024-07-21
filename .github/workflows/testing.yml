@@ -23,8 +23,10 @@ jobs:
           pull: "true"
           script: "add fake 10.0"
       - uses: "./"
+        with:
+          comment_tag: "git-metrics-check-success"
 
-  should-faild:
+  should-fail:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -37,3 +39,6 @@ jobs:
           pull: "true"
           script: "add fake 200.0"
       - uses: "./"
+        with:
+          comment_tag: "git-metrics-check-failed"
+          ignore_failure: "true"
