@@ -17,6 +17,10 @@ inputs:
     description: "Should ignore when check fails"
     required: false
     default: "false"
+  binary_path:
+    description: "Path to the git-metrics binary"
+    required: false
+    default: "git-metrics"
 
 runs:
   using: composite
@@ -25,7 +29,7 @@ runs:
       continue-on-error: true
       shell: bash
       id: check
-      run: git-metrics check origin/$GITHUB_BASE_REF..HEAD > check-output.txt
+      run: ${{ inputs.binary_path }} check origin/$GITHUB_BASE_REF..HEAD > check-output.txt
 
     - name: move file content to output
       shell: bash
