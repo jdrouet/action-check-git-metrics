@@ -12,21 +12,28 @@ inputs:
   comment_tag:
     description: "Tag to use for later updates"
     required: false
-    default: "git-metrics"
+    default: "git-metrics-check"
+  ignore_failure:
+    description: "Should ignore when check fails"
+    required: false
+    default: "false"
 
 runs:
   using: composite
   steps:
-    - name: output git-metrics
+    - name: execute git-metrics
+      continue-on-error: true
       shell: bash
-      id: diff
+      id: check
+      run: git-metrics check origin/$GITHUB_BASE_REF..HEAD > check-output.txt
+
+    - name: move file content to output
+      shell: bash
+      id: check_output
       run: |
-        check_output=$(git-metrics check origin/$GITHUB_BASE_REF..HEAD)
-        check_code=&?
         echo "metrics<<EOF" >> $GITHUB_OUTPUT
-        echo $check_output >> $GITHUB_OUTPUT
+        cat check-output.txt >> $GITHUB_OUTPUT
         echo EOF >> $GITHUB_OUTPUT
-        echo "code=$check_code" >> $GITHUB_OUTPUT
 
     - name: commenting pull request
       uses: thollander/actions-comment-pull-request@v2
@@ -36,10 +43,10 @@ runs:
           📈 This is how your metrics evolved 📉
 
           ```
-          ${{ steps.diff.outputs.metrics }}
+          ${{ steps.check_output.outputs.metrics }}
           ```
 
     - name: report exit code
       shell: bash
-      if: ${{ steps.diff.outputs.code != '0' }}
-      run: exit ${{ steps.diff.outputs.code }}
+      if: ${{ inputs.ignore_failure == 'false' && steps.check.outcome == 'failure' }}
+      run: exit 1
