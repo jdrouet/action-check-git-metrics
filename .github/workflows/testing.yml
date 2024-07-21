@@ -6,6 +6,9 @@ on:
 env:
   RUSTFLAGS: "-Dwarnings"
 
+permissions:
+  pull-requests: write
+
 jobs:
   should-succeed:
     runs-on: ubuntu-latest
