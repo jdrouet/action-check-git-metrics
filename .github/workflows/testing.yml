@@ -19,7 +19,7 @@ jobs:
         with:
           pull: "true"
           script: "add fake 10.0"
-      - uses: jdrouet/action-check-git-metrics@main
+      - uses: "./"
 
   should-faild:
     runs-on: ubuntu-latest
@@ -33,4 +33,4 @@ jobs:
         with:
           pull: "true"
           script: "add fake 200.0"
-      - uses: jdrouet/action-check-git-metrics@main
+      - uses: "./"
